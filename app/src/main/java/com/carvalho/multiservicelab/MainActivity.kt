@@ -1,6 +1,8 @@
 package com.carvalho.multiservicelab
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -21,11 +23,37 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        binding.beepButton.setOnClickListener {
+        binding.notificationButton.setOnClickListener {
+            Log.d("AppA", "Botão clicado")
 
+            val serviceIntent = Intent().apply {
+                setClassName(
+                    "com.carvalho.notificationservice",
+                    "com.carvalho.notificationservice.NotificationService"
+                )
+                putExtra("title", "Inicialização")
+                putExtra("message", "Ativando app NotificationService")
+            }
+
+            try {
+                applicationContext.startService(serviceIntent)
+                Log.d("AppA", "Service iniciado")
+            } catch (e: Exception) {
+                Log.e("AppA", "Erro ao iniciar service: ${e.message}")
+            }
+
+            val broadcastIntent =
+                Intent("com.carvalho.notificationservice.SHOW_NOTIFICATION").apply {
+                    setPackage("com.carvalho.notificationservice")
+                    putExtra("title", "DemoApp")
+                    putExtra("message", "Notification Teste")
+                }
+            sendBroadcast(broadcastIntent)
+            Log.d("AppA", "Broadcast enviado")
         }
 
-        binding.notificationButton.setOnClickListener {
+
+        binding.beepButton.setOnClickListener {
 
         }
 

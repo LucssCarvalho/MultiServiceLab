@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MultiServiceLab"
 include ':app'
+include ':notificationservice'
